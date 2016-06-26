@@ -10,9 +10,10 @@ import 'package:angular2/angular2.dart';
 @Component(selector: 'my-app', templateUrl: 'app_component.html')
 class AppComponent {
   var employees = new List<Employee>();
-  var cities;
-  var departments;
+  var cities = new List<String>();
+  var departments = new List<String>();
   bool descName, descAge, descGender, descDepart, descAddress;
+  int maleC, femaleC;
 
   AppComponent() {
     loadData();
@@ -71,16 +72,18 @@ class AppComponent {
     var temp = new EmployeeImpl.fromJsonString(jsonString);
 
     for (var s in temp) {
-      uniqueCities[s.department] = uniqueCities[s.department] == null
-          ? 0
-          : uniqueCities[s.department] + 1;
-      uniqueDepartments[s.address.city] = uniqueCities[s.address.city] == null
-          ? 0
+      uniqueDepartments[s.department] = uniqueDepartments[s.department] == null
+          ? 1
+          : uniqueDepartments[s.department] + 1;
+      uniqueCities[s.address.city] = uniqueCities[s.address.city] == null
+          ? 1
           : uniqueCities[s.address.city] + 1;
       employees.add(s);
     }
-    cities = uniqueCities.keys.toList();
-    departments = uniqueDepartments.keys.toList();
+    uniqueCities.forEach((x, y) => cities.add(x + " (" + y.toString() + ")"));
+    uniqueDepartments.forEach((x, y) => departments.add(x + " (" + y.toString() + ")"));
+    maleC=employees.where((e) => e.gender == 'male').length;
+    femaleC=employees.where((e) => e.gender == 'female').length;
     employees.sort((a, b) => a.name.compareTo(b.name));
   }
 }
