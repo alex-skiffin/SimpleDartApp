@@ -5,6 +5,7 @@ import 'dart:html';
 
 import 'package:Wrike_test/employee.dart';
 import 'package:angular2/core.dart';
+import 'dart:collection';
 
 @Component(selector: 'my-app', templateUrl: 'app_component.html')
 class AppComponent {
@@ -22,7 +23,16 @@ class AppComponent {
   }
 
   void onDataLoaded(String responseText) {
+    var uniqueCities = new LinkedHashMap<String, bool>();
+    var uniqueDepartments = new LinkedHashMap<String, bool>();
     var jsonString = responseText;
     employees = new EmployeeImpl.fromJsonString(jsonString);
+
+    for (var s in employees) {
+      uniqueCities[s.department] = true;
+      uniqueDepartments[s.address.city] = true;
+    }
+    cities = uniqueCities.keys.toList();
+    departments = uniqueDepartments.keys.toList();
   }
 }
