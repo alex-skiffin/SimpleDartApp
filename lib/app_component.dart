@@ -9,13 +9,19 @@ import 'package:angular2/angular2.dart';
 
 @Component(selector: 'my-app', templateUrl: 'app_component.html')
 class AppComponent {
+  var employeesFull = new List<Employee>();
   var employees = new List<Employee>();
   var cities = new List<String>();
   var departments = new List<String>();
   bool descName, descAge, descGender, descDepart, descAddress;
   int maleC, femaleC;
+  var genderFilter = new List<String>();
+  var departFilter = new List<String>();
+  var cityFilter = new List<String>();
 
   AppComponent() {
+    genderFilter.add("male");
+    genderFilter.add("female");
     loadData();
   }
 
@@ -78,12 +84,52 @@ class AppComponent {
       uniqueCities[s.address.city] = uniqueCities[s.address.city] == null
           ? 1
           : uniqueCities[s.address.city] + 1;
-      employees.add(s);
+      employeesFull.add(s);
     }
-    uniqueCities.forEach((x, y) => cities.add(x + " (" + y.toString() + ")"));
-    uniqueDepartments.forEach((x, y) => departments.add(x + " (" + y.toString() + ")"));
+    employees=employeesFull;
+    uniqueCities.forEach((x, y) {
+      cityFilter.add(x);
+      return cities.add(x + " (" + y.toString() + ")");
+    } );
+    uniqueDepartments.forEach((x, y) {
+      departFilter.add(x);
+      return departments.add(x + " (" + y.toString() + ")");
+    });
     maleC=employees.where((e) => e.gender == 'male').length;
     femaleC=employees.where((e) => e.gender == 'female').length;
     employees.sort((a, b) => a.name.compareTo(b.name));
+
+    querySelectorAll('input[name="gender"]').onChange.listen((x)=>showLessGender(x));
+    querySelectorAll('input[name="department"]').onChange.listen((y)=>showLessDepart(y));
+    querySelectorAll('input[name="city"]').onChange.listen((z)=>showLessCity(z));
+  }
+
+  showLessCity(Event cityEvent) {
+    if(cityEvent.target.checked)
+      cityFilter.add(cityEvent.target.defaultValue);
+    else
+      cityFilter.remove(cityEvent.target.defaultValue);
+    ApplyFilter();
+  }
+
+  showLessDepart(Event departEvent) {
+    if(departEvent.target.checked)
+      departFilter.add(departEvent.target.defaultValue);
+    else
+      departFilter.remove(departEvent.target.defaultValue);
+    ApplyFilter();
+  }
+
+  showLessGender(Event genderEvent) {
+    if(genderEvent.target.checked)
+      genderFilter.add(genderEvent.target.defaultValue);
+    else
+      genderFilter.remove(genderEvent.target.defaultValue);
+    ApplyFilter();
+  }
+
+  void ApplyFilter()
+  {
+    employees=employeesFull.where((x)=> genderFilter.contains(x.gender)).toList();
   }
 }

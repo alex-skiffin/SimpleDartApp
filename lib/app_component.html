@@ -1,22 +1,22 @@
 <div>
     <div class="filter">
         <div class="gender_filter">
-            <input type="checkbox"> male ({{maleC}})<br>
-            <input type="checkbox"> female ({{femaleC}})<br>
+            <input type="checkbox" name="gender" value="male" checked="checked"/> male ({{maleC}})<br>
+            <input type="checkbox" name="gender" value="female" checked="checked"/> female ({{femaleC}})<br>
         </div>
         <div class="department_filter container_all">
             <ul>
-                <li *ngFor="let department of departments"><input type="checkbox"/> {{department}}</li>
+                <li *ngFor="let department of departments"><input type="checkbox"checked="checked" name="department" value="{{department}}"/> {{department}}</li>
             </ul>
         </div>
         <div class="city_filter container_all">
             <ul>
-                <li *ngFor="let city of cities"><input type="checkbox"/> {{city}}</li>
+                <li *ngFor="let city of cities"><input type="checkbox" name="city"checked="checked" value="{{city}}"/> {{city}}</li>
             </ul>
         </div>
     </div>
     <div class="container">
-        <table style="height: auto; width:100%; border:2px solid #ccc;" id="example" class="table table-striped table-bordered" cellspacing="0">
+        <table style="height: auto; width:100%; border:2px solid #ccc;" id="example"checked="checked" class="table table-striped table-bordered" cellspacing="0">
             <thead>
             <tr>
                 <td><a href="#" (click)="sortByName()">Name</a></td>
