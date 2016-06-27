@@ -86,7 +86,9 @@ class AppComponent {
           : uniqueCities[s.address.city] + 1;
       employeesFull.add(s);
     }
+
     employees=employeesFull;
+
     uniqueCities.forEach((x, y) {
       cityFilter.add(x);
       return cities.add(x + " (" + y.toString() + ")");
@@ -98,25 +100,21 @@ class AppComponent {
     maleC=employees.where((e) => e.gender == 'male').length;
     femaleC=employees.where((e) => e.gender == 'female').length;
     employees.sort((a, b) => a.name.compareTo(b.name));
-
-    querySelectorAll('input[name="gender"]').onChange.listen((x)=>showLessGender(x));
-    querySelectorAll('input[name="department"]').onChange.listen((y)=>showLessDepart(y));
-    querySelectorAll('input[name="city"]').onChange.listen((z)=>showLessCity(z));
   }
 
   showLessCity(Event cityEvent) {
     if(cityEvent.target.checked)
-      cityFilter.add(cityEvent.target.defaultValue);
+      cityFilter.add(cityEvent.target.defaultValue.substring(0, cityEvent.target.defaultValue.length-4));
     else
-      cityFilter.remove(cityEvent.target.defaultValue);
+      cityFilter.remove(cityEvent.target.defaultValue.substring(0, cityEvent.target.defaultValue.length-4));
     ApplyFilter();
   }
 
   showLessDepart(Event departEvent) {
     if(departEvent.target.checked)
-      departFilter.add(departEvent.target.defaultValue);
+      departFilter.add(departEvent.target.defaultValue.substring(0, departEvent.target.defaultValue.length-4));
     else
-      departFilter.remove(departEvent.target.defaultValue);
+      departFilter.remove(departEvent.target.defaultValue.substring(0, departEvent.target.defaultValue.length-4));
     ApplyFilter();
   }
 
@@ -130,6 +128,8 @@ class AppComponent {
 
   void ApplyFilter()
   {
-    employees=employeesFull.where((x)=> genderFilter.contains(x.gender)).toList();
+    employees=employeesFull.where((x)=> genderFilter.contains(x.gender)
+    && departFilter.contains(x.department)
+    && cityFilter.contains(x.address.city)).toList();
   }
 }
