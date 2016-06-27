@@ -5,7 +5,6 @@ import 'dart:html';
 import 'package:Wrike_test/employee.dart';
 import 'package:angular2/core.dart';
 import 'dart:collection';
-import 'package:angular2/angular2.dart';
 
 @Component(selector: 'my-app', templateUrl: 'app_component.html')
 class AppComponent {
@@ -87,49 +86,55 @@ class AppComponent {
       employeesFull.add(s);
     }
 
-    employees=employeesFull;
+    employees = employeesFull;
 
     uniqueCities.forEach((x, y) {
       cityFilter.add(x);
       return cities.add(x + " (" + y.toString() + ")");
-    } );
+    });
     uniqueDepartments.forEach((x, y) {
       departFilter.add(x);
       return departments.add(x + " (" + y.toString() + ")");
     });
-    maleC=employees.where((e) => e.gender == 'male').length;
-    femaleC=employees.where((e) => e.gender == 'female').length;
+    maleC = employees.where((e) => e.gender == 'male').length;
+    femaleC = employees.where((e) => e.gender == 'female').length;
     employees.sort((a, b) => a.name.compareTo(b.name));
   }
 
   showLessCity(Event cityEvent) {
-    if(cityEvent.target.checked)
-      cityFilter.add(cityEvent.target.defaultValue.substring(0, cityEvent.target.defaultValue.length-4));
+    if (cityEvent.target.checked)
+      cityFilter.add(cityEvent.target.defaultValue
+          .substring(0, cityEvent.target.defaultValue.length - 4));
     else
-      cityFilter.remove(cityEvent.target.defaultValue.substring(0, cityEvent.target.defaultValue.length-4));
+      cityFilter.remove(cityEvent.target.defaultValue
+          .substring(0, cityEvent.target.defaultValue.length - 4));
     ApplyFilter();
   }
 
   showLessDepart(Event departEvent) {
-    if(departEvent.target.checked)
-      departFilter.add(departEvent.target.defaultValue.substring(0, departEvent.target.defaultValue.length-4));
+    if (departEvent.target.checked)
+      departFilter.add(departEvent.target.defaultValue
+          .substring(0, departEvent.target.defaultValue.length - 4));
     else
-      departFilter.remove(departEvent.target.defaultValue.substring(0, departEvent.target.defaultValue.length-4));
+      departFilter.remove(departEvent.target.defaultValue
+          .substring(0, departEvent.target.defaultValue.length - 4));
     ApplyFilter();
   }
 
   showLessGender(Event genderEvent) {
-    if(genderEvent.target.checked)
+    if (genderEvent.target.checked)
       genderFilter.add(genderEvent.target.defaultValue);
     else
       genderFilter.remove(genderEvent.target.defaultValue);
     ApplyFilter();
   }
 
-  void ApplyFilter()
-  {
-    employees=employeesFull.where((x)=> genderFilter.contains(x.gender)
-    && departFilter.contains(x.department)
-    && cityFilter.contains(x.address.city)).toList();
+  void ApplyFilter() {
+    employees = employeesFull
+        .where((x) =>
+            genderFilter.contains(x.gender) &&
+            departFilter.contains(x.department) &&
+            cityFilter.contains(x.address.city))
+        .toList();
   }
 }
